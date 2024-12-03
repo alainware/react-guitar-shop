@@ -5,6 +5,12 @@ import {db} from "./data/db.js";
 
 function App() {
     const [data, setData] = useState(db);
+    const [cart, setCart] = useState([]);
+    function addToCart (item) {
+        const itemExists = cart.findIndex(guitar => guitar.id === item.id);
+        console.log(itemExists);
+        setCart(prevCart => [...prevCart, item]);
+    }
     return (
         <>
             <Header/>
@@ -13,7 +19,7 @@ function App() {
 
                 <div className="row mt-5">
                     {data?.map((guitar) => (
-                        <Guitar guitar={guitar} key={guitar.id} />
+                        <Guitar guitar={guitar} key={guitar.id} addToCart={addToCart} />
                     ))}
                 </div>
             </main>
