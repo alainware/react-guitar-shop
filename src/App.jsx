@@ -1,31 +1,29 @@
 import {Header} from "./components/Header.jsx";
 import Guitar from "./components/Guitar.jsx";
-import {useState, useEffect} from "react";
-import {db} from "./data/db.js";
+import {useCart} from "./hooks/useCart.js";
 
 function App() {
-    const [data, setData] = useState(db);
-    const [cart, setCart] = useState([]);
-    function addToCart (item) {
-        const itemExists = cart.findIndex(guitar => guitar.id === item.id);
-        if(itemExists >= 0) {
-            const updatedCart = [...cart];
-            updatedCart[itemExists].quantity++
-            setCart(updatedCart);
-        } else {
-            item.quantity = 1;
-            setCart([...cart, item]);
-        }
-    }
+    const {
+        data,
+        cart,
+        addToCart,
+        removeFromCart,
+        decreaseQuantity,
+        increaseQuantity,
+        clearCart,
+        isEmpty,
+        cartTotal
+    } = useCart();
     return (
         <>
-            <Header cart={cart} />
+            <Header cart={cart} removeFromCart={removeFromCart} increaseQuantity={increaseQuantity}
+                    decreaseQuantity={decreaseQuantity} clearCart={clearCart} isEmpty={isEmpty} cartTotal={cartTotal} />
             <main className="container-xl mt-5">
                 <h2 className="text-center">Nuestra Colección</h2>
 
                 <div className="row mt-5">
                     {data?.map((guitar) => (
-                        <Guitar guitar={guitar} key={guitar.id} addToCart={addToCart} />
+                        <Guitar guitar={guitar} key={guitar.id} addToCart={addToCart}/>
                     ))}
                 </div>
             </main>
